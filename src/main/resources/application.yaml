@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: assignment
+  datasource:
+    url: jdbc:mysql://mysql:3306/cdr_db
+    username: root
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 100
+          time_zone: Asia/Kolkata
+        order_inserts: true
+        order_updates: true
+
+
+kafka:
+  bootstrap-servers: kafka:9092
+  consumer:
+    group-id: cdr-consumer-group
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    properties:
+      spring.json.trusted.packages: "*"
+      max.poll.records: 100
+      fetch.max.bytes: 52428800 # 50MB
+      max.partition.fetch.bytes: 52428800
+      enable.auto.commit: false
+
+# application-level config we will read
+app:
+  kafka:
+    topic: cdr-topic
+    batch-size: 100
+    concurrency: 10
